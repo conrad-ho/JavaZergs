@@ -1,11 +1,27 @@
+class MutationException extends Exception {
+    static final long serialVersionUID = 1L;
+    public MutationException(String message) {
+        super(message);
+    }
+}
+
 class Zergs {
     public static void main(String[] args) {
         System.out.println("Game started");
         Larva littlePest = new Larva();
-        Zerg hellokitty = littlePest.spawn(Larva.CORRUPTOR);
-        System.out.println(hellokitty);
-        Zerg brood = ((Corruptor)hellokitty).mutate();
-        System.out.println(brood);
+        try {
+            //int x = 5/0;
+            Object hellokitty = littlePest.spawn(56);
+            System.out.println(hellokitty);
+            //Zerg brood = hellokitty.mutate();
+            Zerg brood = ((Corruptor)hellokitty).mutate();
+            System.out.println(brood);    
+        } catch (MutationException ex) {
+            System.out.println(ex.getMessage());
+            return;
+        } finally {
+            System.out.println("I give up!");
+        }
     }
 }
 
@@ -23,6 +39,7 @@ class Terran {
         return "I am a " + this.getClass().getName() + " with " + legs + " legs!";
     }
 }
+
 
 class Zerg {
     private int claws;
@@ -60,6 +77,12 @@ class Ultralisk extends Zerg{
     Ultralisk() {
         tusks = 2;
         setClaws(2);
+    }
+}
+
+class Infestor extends Zerg{
+    Infestor() {
+        setClaws(1);
     }
 }
 
@@ -107,13 +130,13 @@ class Larva {
     public final static int MUTALISK = 33;
     public final static int ULTRALISK = 99;
     public final static int CORRUPTOR = 44;
+    public final static int INFESTOR = 89;
 
-    Zerg spawn(int type){
+    Zerg spawn(int type) throws MutationException {
         Zerg newZerg = null;
         switch(type) {
-        // case Larva.TERRAN:
-        //     newZerg = new Terran();
-        //     break;
+        case Larva.TERRAN:
+            throw new MutationException("Cannot spawn Terran units!");
         case Larva.HYDRALISK:
             newZerg = new Hydralisk();
             break;
@@ -126,8 +149,11 @@ class Larva {
         case Larva.CORRUPTOR:
             newZerg =  new Corruptor();
             break;
-        
-        
+        case Larva.INFESTOR:
+            newZerg =  new Infestor();
+            break;
+        default:
+            throw new MutationException("Cannot spawn invalid zerg type!");
         }
         return newZerg;
     }
