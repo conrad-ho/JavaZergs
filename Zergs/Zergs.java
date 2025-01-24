@@ -99,7 +99,7 @@ class Mutalisk extends Zerg {
 
 class Corruptor extends Zerg {
     int tentacles;
-    Mutalisk() {
+    Corruptor() {
         tentacles = 8;
         setClaws(0); 
     }
