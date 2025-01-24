@@ -22,6 +22,7 @@ class Zergs {
         } finally {
             System.out.println("I give up!");
         }
+        System.out.println("Game ended");
     }
 }
 
